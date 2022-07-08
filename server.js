@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const connectDB = require('./config/db');
 
 //Route files
-const users = require('./routes/users');
+const adults = require('./routes/adults');
 
 dotenv.config({ path: './config/config.env'});
 
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Mount files
-app.use('/api/v1/users', users)
+app.use('/api/v1/adults', adults)
 
 const server = app.listen(
   PORT,
