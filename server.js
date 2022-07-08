@@ -1,31 +1,17 @@
 const express = require("express");
 const dotenv = require("dotenv");
 
+//Route files
+const users = require('./routes/users');
+
 dotenv.config({ path: './config/config.env'});
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.get('/api/v1/users', (req, res) => {
-  res.status(200).json({success: true, msg: 'Get all Users'})
-});
-
-app.get('/api/v1/users/:id', (req, res) => {
-  res.status(200).json({success: true, msg: `Get single user by ID: ${req.params.id}` });
-});
-
-app.post('/api/v1/users', (req, res) => {
-  res.status(200).json({success: true, msg: 'Create new user'})
-});
-
-app.put('/api/v1/users/:id', (req, res) => {
-  res.status(200).json({success: true, msg: `Update user by ID: ${req.params.id}` })
-});
-
-app.delete('/api/v1/users/:id', (req, res) => {
-  res.status(200).json({success: true, msg: `Delete user by ID: ${req.params.id}` })
-});
+// Mount files
+app.use('/api/v1/users', users)
 
 app.listen(
   PORT,
