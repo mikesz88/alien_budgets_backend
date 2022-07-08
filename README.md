@@ -13,3 +13,4 @@
 8. Create Route files to make it simpler.
 9. Create Controller files.
 10. Setup Middleware & Morgan
+11. Setup Mongoose and Connect Database
