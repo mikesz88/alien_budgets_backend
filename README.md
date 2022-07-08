@@ -1,4 +1,4 @@
-# Steps How I build the backend
+# Steps how I build the backend
 1. Create
    1. Folder
    2. git path
@@ -7,4 +7,6 @@
 2. Installed Express and dotenv
 3. Created a config folder with a env file that is not in the repo.
 4. Installed Nodemon
-5. Created a listening port
+5. Created a listening port.
+6. Mongo Website: Created a database for Alien Budgets.
+7. Test server response with simple routes
