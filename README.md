@@ -12,3 +12,4 @@
 7. Test server response with simple USER routes
 8. Create Route files to make it simpler.
 9. Create Controller files.
+10. Setup Middleware & Morgan
