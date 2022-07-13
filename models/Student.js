@@ -1,41 +1,33 @@
 const mongoose = require('mongoose');
 
-const AdultSchema = new mongoose.Schema({
+const StudentSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
     required: [true, 'Please add a name']
   },
-  lastName: {
+  lastInitial: {
     type: String,
-    trim: true,
-    required: [true, 'Please add a last name']
+    maxLength: 1,
+    required: [true, 'Please add a last Initial']
   },
-  email: {
+  username: {
     type: String,
-    required: [true, 'Please add an email'],
+    required: [true, 'Please add a username'],
     unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email'
-    ]
+    minlength: 8,
+  },
+  classroomCode: {
+    type: String,
+    minLength: 6,
+    maxLength: 6,
+    required: [true, 'Please add a classroom code'],
   },
   password: {
     type: String,
     required: [true, 'Please add a password'],
     minlength: 8,
     select: false
-  },
-  gradeLevel: {
-    type: Array,
-    validate: {
-      validator: function(v) {
-        console.log(v)
-        return v.length > 0 && v.every(val => typeof val === "string");
-      },
-      message: () => `You need at least one grade level.`
-    },
-    required: [true, `You must have one grade picked.`]
   },
   forgotPasswordQuestion: {
     type: String,
@@ -55,4 +47,4 @@ const AdultSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('Adult', AdultSchema);
+module.exports = mongoose.model('Student', StudentSchema);

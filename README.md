@@ -14,3 +14,4 @@
 9. Create Controller files.
 10. Setup Middleware & Morgan
 11. Setup Mongoose and Connect Database
+12. Create Student routes, controllers, and model.

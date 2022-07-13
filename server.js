@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 
 //Route files
 const adults = require('./routes/adults');
+const students = require('./routes/students');
 
 dotenv.config({ path: './config/config.env'});
 
@@ -14,13 +15,17 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+// Parse JSON
+app.use(express.json());
+
 // display routes in console
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 // Mount files
-app.use('/api/v1/adults', adults)
+app.use('/api/v1/adults', adults);
+app.use('/api/v1/students', students);
 
 const server = app.listen(
   PORT,
