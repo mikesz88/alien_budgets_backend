@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 //Route files
 const adults = require('./routes/adults');
@@ -26,6 +27,9 @@ if (process.env.NODE_ENV === 'development') {
 // Mount files
 app.use('/api/v1/adults', adults);
 app.use('/api/v1/students', students);
+
+// Error Handler must come after mount files
+app.use(errorHandler);
 
 const server = app.listen(
   PORT,

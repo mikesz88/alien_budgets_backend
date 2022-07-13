@@ -1,7 +1,7 @@
 const Student = require('../models/Student');
 
-// @desc Get all users
-// @route GET /api/v1/users
+// @desc Get all students
+// @route GET /api/v1/students
 // @access PRIVATE
 exports.getStudents = async (req, res, next) => {
   try {
@@ -12,8 +12,8 @@ exports.getStudents = async (req, res, next) => {
   }
 };
 
-// @desc Get single user
-// @route GET /api/v1/users/:id
+// @desc Get single student
+// @route GET /api/v1/students/:id
 // @access PRIVATE
 exports.getStudent = async (req, res, next) => {
   try {
@@ -28,9 +28,9 @@ exports.getStudent = async (req, res, next) => {
   }
 };
 
-// @desc Create new user
-// @route POST /api/v1/users
-// @access PRIVATE
+// @desc Create new student
+// @route POST /api/v1/students
+// @access PUBLIC
 exports.createStudent = async (req, res, next) => {
   try {
     const student = await Student.create(req.body);
@@ -40,8 +40,8 @@ exports.createStudent = async (req, res, next) => {
   }
 };
 
-// @desc Update user
-// @route PUT /api/v1/users/:id
+// @desc Update student
+// @route PUT /api/v1/students/:id
 // @access PRIVATE
 exports.updateStudent = async (req, res, next) => {
   try {
@@ -60,8 +60,8 @@ exports.updateStudent = async (req, res, next) => {
   }
 };
 
-// @desc Delete user
-// @route DELETE /api/v1/users/:id
+// @desc Delete student
+// @route DELETE /api/v1/students/:id
 // @access PRIVATE
 exports.deleteStudent = async (req, res, next) => {
   try {
