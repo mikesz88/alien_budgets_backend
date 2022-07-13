@@ -30,10 +30,9 @@ const AdultSchema = new mongoose.Schema({
     type: Array,
     validate: {
       validator: function(v) {
-        console.log(v)
         return v.length > 0 && v.every(val => typeof val === "string");
       },
-      message: () => `You need at least one grade level.`
+      message: () => `Must be a String and you need at least one grade level.`
     },
     required: [true, `You must have one grade picked.`]
   },

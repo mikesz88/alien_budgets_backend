@@ -9,7 +9,7 @@ exports.getAdults = async (req, res, next) => {
     const adults = await Adult.find();
     res.status(200).json({ success: true, count: adults.length, data: adults })
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -21,12 +21,11 @@ exports.getAdult = async (req, res, next) => {
     const adult = await Adult.findById(req.params.id);
 
     if (!adult) {
-      return next(new ErrorResponse('Course not found with id of ${req.params.id}', 404));
+      return next(new ErrorResponse(`Course not found with id of ${req.params.id}`, 404));
     }
     res.status(200).json({ success: true, data: adult })
   } catch (error) {
-    // res.status(400).json({ success: false });
-    next(new ErrorResponse('Course not found with id of ${req.params.id}', 404));
+    next(error);
   }
 };
 
@@ -38,7 +37,7 @@ exports.createAdult = async (req, res, next) => {
     const adult = await Adult.create(req.body);
     res.status(201).json({success: true, data: adult})
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -58,7 +57,7 @@ exports.updateAdult = async (req, res, next) => {
 
     res.status(200).json({ success: true, data: adult })  
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -75,6 +74,6 @@ exports.deleteAdult = async (req, res, next) => {
 
     res.status(200).json({ success: true, data: {} })  
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
