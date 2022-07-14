@@ -21,4 +21,5 @@
 16. Created Seeder file to add fake data
 17. Added Query, select, and Sort functions to student
 18. Add Pagination to Students
-19. Create seeder for avatar. Refactored seeder for students to add avatars
+19. Create seeder for avatar. Refactored seeder for students to add avatars. Removed randomAnimal NPM package
+20. Refactored seeder for Adult Avatars. Refactored Pagination to show more information.

@@ -30,14 +30,17 @@ exports.getStudents = asyncHandler(async (req, res, next) => {
 
   // Pagination
   const page = +req.query.page || 1;
-  const limit = +req.query.limit || 5;
+  const limit = +req.query.limit || 25;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await Student.countDocuments();
 
   query = query.skip(startIndex).limit(limit);
 
-  const pagination = {};
+  const pagination = {
+    total,
+    totalPages: Math.ceil(total / limit)
+  };
 
   if (endIndex < total) {
     pagination.next = { page: page + 1, limit }
