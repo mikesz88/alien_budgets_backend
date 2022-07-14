@@ -76,5 +76,9 @@ StudentSchema.methods.getSignedJwt = function() {
   });
 }
 
+StudentSchema.methods.matchPassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+}
+
 
 module.exports = mongoose.model('Student', StudentSchema);
