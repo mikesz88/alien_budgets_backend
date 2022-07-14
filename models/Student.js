@@ -17,6 +17,22 @@ const StudentSchema = new mongoose.Schema({
     unique: true,
     minlength: 8,
   },
+  avatarURL: {
+    type: String,
+    required: [true, 'Please add a link to the image'],
+    match: [
+      /^(https:\/\/alienbudgets\.s3\.amazonaws\.com\/).+(\.png)$/gm,
+      'Please add a valid s3 url'
+    ]
+  },
+  avatarColor: {
+    type: String,
+    required: [true, 'Please add a background color to your avatar'],
+    match: [
+      /^(#)([A-Za-z0-9]{6}$)/gm,
+      'Please write a proper HEX code'
+    ]
+  },
   classroomCode: {
     type: String,
     minLength: 6,

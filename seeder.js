@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const create10Adults = require('./_data/Adult');
@@ -9,6 +10,7 @@ dotenv.config({ path: './config/config.env'});
 // load models
 const Adult = require('./models/Adult');
 const Student = require('./models/Student');
+const Avatar = require('./models/Avatar');
 
 // Connect DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -16,12 +18,18 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 }); 
 
+// Read JSON
+const avatars = JSON.parse(fs.readFileSync(`${__dirname}/_data/Avatar.json`))
+
+// Faker JS
 const adults = create10Adults();
 const students = create150Students();
+
 
 // import into DB
 const importAdults = async () => {
   try {
+    await Avatar.create(avatars);
     await Adult.create(adults);
     await Student.create(students);
     console.log('data imported...');
@@ -34,6 +42,7 @@ const importAdults = async () => {
 // delete data from DB
 const deleteAdults = async () => {
   try {
+    await Avatar.deleteMany();
     await Adult.deleteMany();
     await Student.deleteMany();
     console.log('data deleted...');
