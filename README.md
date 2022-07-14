@@ -18,3 +18,4 @@
 13. Create Custom ErrorHandler
 14. Create custom Messages for Errors
 15. Create asyncHandler to make it DRY
+16. Created Seeder file to add fake data
