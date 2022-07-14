@@ -19,3 +19,4 @@
 14. Create custom Messages for Errors
 15. Create asyncHandler to make it DRY
 16. Created Seeder file to add fake data
+17. Added Query, select, and Sort functions to student
