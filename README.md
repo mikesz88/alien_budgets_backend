@@ -27,3 +27,4 @@
 22. Add auth route and controller. Add Register User
 23. Add Token to user when registering.
 24. Add Login to Adult and Student
+25. Add token in a cookie for browser

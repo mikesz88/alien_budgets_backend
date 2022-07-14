@@ -4,8 +4,8 @@ const morgan = require("morgan");
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 
-
 const path = require('path');
+const cookieParser = require('cookie-parser');
 dotenv.config({ path: './config/config.env'});
 
 connectDB();
@@ -21,6 +21,9 @@ const app = express();
 
 // Parse JSON
 app.use(express.json());
+
+// cookie parser
+app.use(cookieParser());
 
 // display routes in console
 if (process.env.NODE_ENV === 'development') {
