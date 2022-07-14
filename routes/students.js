@@ -11,13 +11,12 @@ const {
   deleteStudent
 } = require('../controllers/students');
 
-router.route('/')
-  .get(filteredResults(Student), getStudents)
-  .post(createStudent);
+const { protect } = require('../middleware/auth');
 
+router.route('/')
+  .get(protect, filteredResults(Student), getStudents);
+  
 router.route('/:id')
-  .get(getStudent)
-  .put(updateStudent)
-  .delete(deleteStudent);
+  .get(protect, getStudent);
 
 module.exports = router;
