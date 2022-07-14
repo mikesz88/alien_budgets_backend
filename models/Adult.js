@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const AdultSchema = new mongoose.Schema({
   firstName: {
@@ -74,5 +75,12 @@ AdultSchema.pre('save', async function(next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 })
+
+// Sign JWT and return
+AdultSchema.methods.getSignedJwt = function() {
+  return jwt.sign({ id: this.__id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE
+  });
+}
 
 module.exports = mongoose.model('Adult', AdultSchema);

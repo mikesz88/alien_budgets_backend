@@ -25,3 +25,4 @@
 20. Refactored seeder for Adult Avatars. Refactored Pagination to show more information.
 21. Refactored reusable filteredResults
 22. Add auth route and controller. Add Register User
+23. Add Token to user when registering.

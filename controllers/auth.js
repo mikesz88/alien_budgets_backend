@@ -32,7 +32,12 @@ exports.registerAdult = asyncHandler(async (req, res, next) => {
     forgotPasswordAnswer
   });
 
-  res.status(200).json({ success: true, data: user });
+  const token = user.getSignedJwt();
+
+  res.status(200).json({ 
+    success: true, 
+    data: user, 
+    token });
 
 });
 
@@ -65,6 +70,11 @@ exports.registerStudent = asyncHandler(async (req, res, next) => {
     forgotPasswordAnswer
   });
 
-  res.status(200).json({ success: true, data: user });
+  const token = user.getSignedJwt();
 
+  res.status(200).json({ 
+    success: true, 
+    data: user, 
+    token });
+    
 });
