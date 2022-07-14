@@ -23,3 +23,4 @@
 18. Add Pagination to Students
 19. Create seeder for avatar. Refactored seeder for students to add avatars. Removed randomAnimal NPM package
 20. Refactored seeder for Adult Avatars. Refactored Pagination to show more information.
+21. Refactored reusable filteredResults

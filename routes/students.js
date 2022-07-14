@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const filteredResults = require('../middleware/filteredResults');
+const Student = require('../models/Student');
 
 const {
   getStudents,
@@ -10,7 +12,7 @@ const {
 } = require('../controllers/students');
 
 router.route('/')
-  .get(getStudents)
+  .get(filteredResults(Student), getStudents)
   .post(createStudent);
 
 router.route('/:id')

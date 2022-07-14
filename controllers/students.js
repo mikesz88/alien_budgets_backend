@@ -6,58 +6,7 @@ const asyncHandler = require('../middleware/async');
 // @route GET /api/v1/students
 // @access PRIVATE
 exports.getStudents = asyncHandler(async (req, res, next) => {
-  let query;
-  const reqQuery = { ...req.query };
-  const removeFields = ['select', 'sort', 'page', 'limit'];
-  removeFields.forEach(param => delete reqQuery[param]);
-
-  let queryStr = JSON.stringify(reqQuery);
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
-
-  query = Student.find(JSON.parse(queryStr));
-
-  if (req.query.select) {
-    const fields = req.query.select.split(',').join(' ');
-    query = query.select(fields);
-  }
-
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(',').join(' ');
-    query = query.sort(sortBy);
-  } else {
-    query.sort('-createdAt');
-  }
-
-  // Pagination
-  const page = +req.query.page || 1;
-  const limit = +req.query.limit || 25;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const total = await Student.countDocuments();
-
-  query = query.skip(startIndex).limit(limit);
-
-  const pagination = {
-    total,
-    totalPages: Math.ceil(total / limit)
-  };
-
-  if (endIndex < total) {
-    pagination.next = { page: page + 1, limit }
-  }
-
-  if (startIndex > 0) {
-    pagination.prev = { page: page - 1, limit }
-  }
-
-  const students = await query;
-
-  res.status(200).json({ 
-    success: true, 
-    count: students.length,
-    pagination, 
-    data: students 
-  });
+    res.status(200).json(res.filteredResults);
 });
 
 // @desc Get single student
