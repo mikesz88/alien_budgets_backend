@@ -3,6 +3,7 @@ const Student = require('../models/Student');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 // @desc Register Adult
 // @route POST /api/v1/auth/register/adult
@@ -150,6 +151,34 @@ exports.adultForgotPassword = asyncHandler( async(req, res, next) => {
     await user.save({ validateBeforeSave: false });
   }
 });
+
+// @desc POST Reset Adult Password
+// @route GET /api/v1/auth/resetpassword/:resettoken
+// @access PUBLIC
+exports.resetPassword = asyncHandler( async(req, res, next) => {
+
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.resettoken)
+    .digest('hex');
+
+  const user = await Adult.findOne({
+    resetPasswordToken,
+    resetPasswordExpired: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return next(new ErrorResponse('Invalid token', 400));
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpired = undefined;
+  user.save();
+
+  sendTokenResponse(user, 200, res);
+});
+
 
 
 const sendTokenResponse = (user, statusCode, res) => {
