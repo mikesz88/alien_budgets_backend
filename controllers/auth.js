@@ -98,6 +98,23 @@ exports.login = asyncHandler(async (req, res, next) => {
     
 });
 
+// @desc Logout User
+// @route GET /api/v1/auth/logout
+// @access PUBLIC
+exports.logout = asyncHandler( async(req, res, next) => {
+  console.log(res);
+
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 1 + 1000),
+    httpOnly: true
+  })
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  })
+});
+
 // @desc Get logged in User
 // @route GET /api/v1/auth/me
 // @access PRIVATE
@@ -227,7 +244,78 @@ exports.resetPassword = asyncHandler( async(req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
+// @desc Update User Details
+// @route PUT /api/v1/auth/adult/updatedetails
+// @access PRIVATE
+exports.adultUpdateDetails = asyncHandler( async(req, res, next) => {
+  
+  const fieldsToUpdate = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    avatarURL: req.body.avatarURL,
+    avatarColor: req.body.avatarColor,
+    gradeLevel: req.body.gradeLevel,
+  }
+  
+  const user = await Adult.findByIdAndUpdate(req.adult.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  }); 
 
+  res.status(200).json({
+    success: true,
+    data: user,
+  })
+});
+
+// @desc Update User Details
+// @route PUT /api/v1/auth/student/updatedetails
+// @access PRIVATE
+exports.studentUpdateDetails = asyncHandler( async(req, res, next) => {
+  
+  const fieldsToUpdate = {
+    firstName: req.body.firstName,
+    lastInitial: req.body.lastInitial,
+    username: req.body.username,
+    avatarURL: req.body.avatarURL,
+    avatarColor: req.body.avatarColor,
+    classroomCode: req.body.classroomCode,
+  }
+  
+  const user = await Student.findByIdAndUpdate(req.student.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  }); 
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  })
+});
+
+// @desc Update User Password
+// @route POST /api/v1/auth/updatepassword
+// @access PRIVATE
+exports.updatePassword = asyncHandler( async(req, res, next) => {
+  
+  let user;
+
+  if (req.adult) {
+    user = await Adult.findById(req.adult.id).select('+password'); 
+  } else {
+    user = await Student.findById(req.student.id).select('+password'); 
+  }
+
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Password is incorrect', 401));
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
+});
 
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwt();

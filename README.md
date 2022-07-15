@@ -33,3 +33,4 @@
 28. Create Email service for forgot password to user. Needs link to actual webpage so they can make the necessary changes.
 29. Complete Reset Password route and controller
 30. Complete General Forgot Question and Answer endpoints
+31. Complete logout, update, update password routes.
