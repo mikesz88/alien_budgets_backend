@@ -2,6 +2,7 @@ const Adult = require('../models/Adult');
 const Student = require('../models/Student');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const sendEmail = require('../utils/sendEmail');
 
 // @desc Register Adult
 // @route POST /api/v1/auth/register/adult
@@ -108,7 +109,48 @@ exports.getLoggedInUser = asyncHandler( async(req, res, next) => {
     success: true,
     data: user,
   })
-})
+});
+
+// @desc Forgot Password
+// @route POST /api/v1/auth/adult/forgotpassword
+// @access PRIVATE
+exports.adultForgotPassword = asyncHandler( async(req, res, next) => {
+  const user = await Adult.findOne({ email: req.body.email }) 
+  
+  if (!user) {
+    return next(new ErrorResponse('There is no user with that email', 404));
+  }
+
+  const resetToken = user.getResetPasswordToken();
+  await user.save({ validateBeforeSave: true });
+  
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`;
+
+  const message = `
+  You are receiving this email because you (or someone else) has requested a password reset.
+  Please click this link: ${resetUrl} and follow the directions to reset your password.
+  `;
+
+  const options = {
+    email: user.email,
+    subject: 'Password Reset',
+    message,
+  }
+
+  try {
+    await sendEmail(options);
+    res.status(200).json({  success: true, data: 'Email sent' })
+  } catch (error) {
+    console.log(err)
+    // return next(new ErrorResponse('Did not work', 404));
+
+    user.getResetPasswordToken = undefined;
+    user.getResetPasswordExpired = undefined;
+
+    await user.save({ validateBeforeSave: false });
+  }
+});
+
 
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwt();

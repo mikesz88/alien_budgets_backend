@@ -30,3 +30,4 @@
 25. Add token in a cookie for browser
 26. Add protected route to /me. Still need to modify protection to be only see students based on classCodes.
 27. Add authorization to getAllStudents route
+28. Create Email service for forgot password to user. Needs link to actual webpage so they can make the necessary changes.

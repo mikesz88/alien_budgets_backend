@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const AdultSchema = new mongoose.Schema({
   firstName: {
@@ -54,6 +55,15 @@ const AdultSchema = new mongoose.Schema({
     },
     required: [true, `You must have one grade picked.`]
   },
+  classrooms: {
+    type: Array,
+    validate: {
+      validator: function(v) {
+        return v.every(val => (typeof val === "string") && /^[a-zA-Z0-9]{6,}$/.test(val));
+      },
+      message: () => `Must be a 6 alphanumeric class code.`
+    },
+  },
   forgotPasswordQuestion: {
     type: String,
     required: [true, 'Please add a forgot password question'],
@@ -72,6 +82,9 @@ const AdultSchema = new mongoose.Schema({
 });
 
 AdultSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) {
+    next();
+  }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 })
@@ -85,6 +98,18 @@ AdultSchema.methods.getSignedJwt = function(next) {
 
 AdultSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+}
+
+AdultSchema.methods.getResetPasswordToken = function() {
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  this.resetPasswordExpired = Date.now() + 10 * 60 * 1000;
+  return resetToken;
 }
 
 module.exports = mongoose.model('Adult', AdultSchema);
