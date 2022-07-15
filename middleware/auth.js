@@ -28,3 +28,16 @@ exports.protect = asyncHandler(async(req, res, next) => {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 });
+
+exports.authorize = () => {
+  return (req, res, next) => {
+    if (!req.adult) {
+      return next(
+        new ErrorResponse(
+          `Students are not authorized to access this route`, 
+          403
+        ))
+    }
+    next();
+  }
+}

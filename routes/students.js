@@ -11,12 +11,12 @@ const {
   deleteStudent
 } = require('../controllers/students');
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 router.route('/')
-  .get(protect, filteredResults(Student), getStudents);
+  .get(protect, authorize('adult'), filteredResults(Student), getStudents);
   
 router.route('/:id')
-  .get(protect, getStudent);
+  .get(protect, authorize('adult'), getStudent);
 
 module.exports = router;

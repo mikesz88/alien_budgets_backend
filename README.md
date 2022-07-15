@@ -29,3 +29,4 @@
 24. Add Login to Adult and Student
 25. Add token in a cookie for browser
 26. Add protected route to /me. Still need to modify protection to be only see students based on classCodes.
+27. Add authorization to getAllStudents route

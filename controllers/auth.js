@@ -100,7 +100,9 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @route GET /api/v1/auth/me
 // @access PRIVATE
 exports.getLoggedInUser = asyncHandler( async(req, res, next) => {
-  const user = req.adult ? await Adult.findById(req.adult.id) : await Student.findById(req.student.id);
+  const user = req.adult 
+    ? await Adult.findById(req.adult.id) 
+    : await Student.findById(req.student.id);
   
   res.status(200).json({
     success: true,
