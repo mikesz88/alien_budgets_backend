@@ -71,7 +71,7 @@ StudentSchema.pre('save', async function(next) {
 
 // Sign JWT and return
 StudentSchema.methods.getSignedJwt = function() {
-  return jwt.sign({ id: this.__id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   });
 }

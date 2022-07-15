@@ -77,8 +77,8 @@ AdultSchema.pre('save', async function(next) {
 })
 
 // Sign JWT and return
-AdultSchema.methods.getSignedJwt = function() {
-  return jwt.sign({ id: this.__id }, process.env.JWT_SECRET, {
+AdultSchema.methods.getSignedJwt = function(next) {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   });
 }
