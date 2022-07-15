@@ -112,9 +112,9 @@ exports.getLoggedInUser = asyncHandler( async(req, res, next) => {
   })
 });
 
-// @desc Forgot Password
+// @desc Adult Forgot Password
 // @route POST /api/v1/auth/adult/forgotpassword
-// @access PRIVATE
+// @access PUBLIC
 exports.adultForgotPassword = asyncHandler( async(req, res, next) => {
   const user = await Adult.findOne({ email: req.body.email }) 
   
@@ -152,7 +152,55 @@ exports.adultForgotPassword = asyncHandler( async(req, res, next) => {
   }
 });
 
-// @desc POST Reset Adult Password
+// @desc Forgot Question
+// @route PUT /api/v1/auth/forgotquestion
+// @access PUBLIC
+exports.forgotQuestion = asyncHandler( async(req, res, next) => {
+
+  const user = 
+  await Adult.findOne({ email: req.body.email })
+  ? await Adult.findOne({ email: req.body.email })
+  : await Student.findOne({ email: req.body.username });
+  
+  if (!user) {
+    return next(new ErrorResponse('There is no user with that email', 401))
+  };
+
+  res.status(200).json({
+    success: true,
+    data: user.forgotPasswordQuestion,
+  })
+})
+
+// @desc Forgot Password
+// @route POST /api/v1/auth/forgotpassword
+// @access PUBLIC
+exports.forgotPassword = asyncHandler(async(req, res, next) => {
+  const user = 
+  await Adult.findOne({ email: req.body.email }).select('+forgotPasswordAnswer')
+  ? await Adult.findOne({ email: req.body.email }).select('+forgotPasswordAnswer')
+  : await Student.findOne({ username: req.body.username }).select('+forgotPasswordAnswer')
+  
+  if (!user) {
+    return next(new ErrorResponse('There is no user with that email or username', 404))
+  }
+  console.log(user);
+  // compare forgotten Password Answer with user Forgotten Answer in account
+  const isMatch = await user.matchForgotAnswer(req.body.forgotPasswordAnswer);
+  if (!isMatch) {
+    return next(new ErrorResponse('Invalid credentials', 401));
+  }
+
+  const resetToken = user.getResetPasswordToken();
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    data: resetToken
+  })
+});
+
+// @desc POST Reset Password
 // @route GET /api/v1/auth/resetpassword/:resettoken
 // @access PUBLIC
 exports.resetPassword = asyncHandler( async(req, res, next) => {
@@ -162,11 +210,11 @@ exports.resetPassword = asyncHandler( async(req, res, next) => {
     .update(req.params.resettoken)
     .digest('hex');
 
-  const user = await Adult.findOne({
-    resetPasswordToken,
-    resetPasswordExpired: { $gt: Date.now() }
-  });
+  const user = await Adult.findOne({ resetPasswordToken, resetPasswordExpired: { $gt: Date.now() }}) 
+  ? await Adult.findOne({ resetPasswordToken, resetPasswordExpired: { $gt: Date.now() }}) 
+  : await Student.findOne({ resetPasswordToken, resetPasswordExpired: { $gt: Date.now() }});
 
+  
   if (!user) {
     return next(new ErrorResponse('Invalid token', 400));
   }

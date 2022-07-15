@@ -89,6 +89,14 @@ AdultSchema.pre('save', async function(next) {
   this.password = await bcrypt.hash(this.password, salt);
 })
 
+AdultSchema.pre('save', async function(next) {
+  if (!this.isModified('forgotPasswordAnswer')) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.forgotPasswordAnswer = await bcrypt.hash(this.forgotPasswordAnswer, salt);
+});
+
 // Sign JWT and return
 AdultSchema.methods.getSignedJwt = function(next) {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
@@ -99,6 +107,10 @@ AdultSchema.methods.getSignedJwt = function(next) {
 AdultSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 }
+
+AdultSchema.methods.matchForgotAnswer = async function(enteredForgotAnswer) {
+  return await bcrypt.compare(enteredForgotAnswer, this.forgotPasswordAnswer);
+};
 
 AdultSchema.methods.getResetPasswordToken = function() {
   const resetToken = crypto.randomBytes(20).toString('hex');
