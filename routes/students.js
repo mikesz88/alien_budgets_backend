@@ -6,9 +6,7 @@ const Student = require('../models/Student');
 const {
   getStudents,
   getStudent,
-  createStudent,
-  updateStudent,
-  deleteStudent
+  getClassStudents
 } = require('../controllers/students');
 
 const { protect, authorizedAdult } = require('../middleware/auth');
@@ -18,5 +16,8 @@ router.route('/')
   
 router.route('/:id')
   .get(protect, authorizedAdult(), getStudent);
+
+router.route('/class/:classid')
+  .get(protect, getClassStudents);
 
 module.exports = router;

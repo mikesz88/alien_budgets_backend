@@ -34,3 +34,5 @@
 29. Complete Reset Password route and controller
 30. Complete General Forgot Question and Answer endpoints
 31. Complete logout, update, update password routes.
+32. Add find students by class id protected route (no adult needed)
+33. Find adult by class id protected route (no adult needed )

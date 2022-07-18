@@ -256,6 +256,7 @@ exports.adultUpdateDetails = asyncHandler( async(req, res, next) => {
     avatarURL: req.body.avatarURL,
     avatarColor: req.body.avatarColor,
     gradeLevel: req.body.gradeLevel,
+    classrooms: req.body.classrooms,
   }
   
   const user = await Adult.findByIdAndUpdate(req.adult.id, fieldsToUpdate, {

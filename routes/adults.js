@@ -2,20 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  getAdults,
   getAdult,
-  createAdult,
-  updateAdult,
-  deleteAdult
 } = require('../controllers/adults');
 
-router.route('/')
-  .get(getAdults)
-  .post(createAdult);
+const { protect } = require('../middleware/auth');
 
-router.route('/:id')
-  .get(getAdult)
-  .put(updateAdult)
-  .delete(deleteAdult);
+
+router.route('/class/:classid')
+  .get(protect, getAdult);
 
 module.exports = router;

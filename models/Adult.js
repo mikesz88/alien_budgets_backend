@@ -23,6 +23,10 @@ const AdultSchema = new mongoose.Schema({
       'Please add a valid email'
     ]
   },
+  role: {
+    type: String,
+    default: 'adult'
+  },
   password: {
     type: String,
     required: [true, 'Please add a password'],
