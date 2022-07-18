@@ -29,7 +29,7 @@ router.put('/adult/updatedetails', protect, authorizedAdult(), adultUpdateDetail
 router.put('/student/updatedetails', protect, studentUpdateDetails);
 router.post('/updatepassword', protect, updatePassword);
 router.post('/forgotpassword', forgotPassword);
-router.put('/forgotquestion', forgotQuestion);
+router.get('/forgotquestion/:user', forgotQuestion);
 router.put('/resetpassword/:resettoken', resetPassword);
 
 module.exports = router;

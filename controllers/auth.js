@@ -170,14 +170,14 @@ exports.adultForgotPassword = asyncHandler( async(req, res, next) => {
 });
 
 // @desc Forgot Question
-// @route PUT /api/v1/auth/forgotquestion
+// @route GET /api/v1/auth/forgotquestion/:user
 // @access PUBLIC
 exports.forgotQuestion = asyncHandler( async(req, res, next) => {
 
   const user = 
-  await Adult.findOne({ email: req.body.email })
-  ? await Adult.findOne({ email: req.body.email })
-  : await Student.findOne({ email: req.body.username });
+  await Adult.findOne({ email: req.params.user })
+  ? await Adult.findOne({ email: req.params.user })
+  : await Student.findOne({ username: req.params.user });
   
   if (!user) {
     return next(new ErrorResponse('There is no user with that email', 401))

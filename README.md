@@ -36,3 +36,4 @@
 31. Complete logout, update, update password routes.
 32. Add find students by class id protected route (no adult needed)
 33. Find adult by class id protected route (no adult needed )
+34. Add security features to the server
