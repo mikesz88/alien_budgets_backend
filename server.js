@@ -20,6 +20,7 @@ connectDB();
 const adults = require('./routes/adults');
 const students = require('./routes/students');
 const auth = require('./routes/auth');
+const avatars = require('./routes/avatars')
 
 const PORT = process.env.PORT || 5000;
 
@@ -56,6 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/adults', adults);
 app.use('/api/v1/students', students);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/avatars', avatars)
 
 // Error Handler must come after mount files
 app.use(errorHandler);
