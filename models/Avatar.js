@@ -14,6 +14,10 @@ const AvatarSchema = new mongoose.Schema({
       /^(https:\/\/alienbudgets\.s3\.amazonaws\.com\/).+(\.png)$/gm,
       'Please add a valid s3 url'
     ]
+  },
+  createAt: {
+    type: Date,
+    default: Date.now
   }
 });
 

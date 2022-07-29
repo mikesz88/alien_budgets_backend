@@ -17,8 +17,6 @@ const filteredResults = (model) => async (req, res, next) => {
   if (req.query.sort) {
     const sortBy = req.query.sort.split(',').join(' ');
     query = query.sort(sortBy);
-  } else {
-    query.sort('-createdAt');
   }
 
   // Pagination
@@ -32,6 +30,7 @@ const filteredResults = (model) => async (req, res, next) => {
 
   const pagination = {
     total,
+    page,
     totalPages: Math.ceil(total / limit)
   };
 

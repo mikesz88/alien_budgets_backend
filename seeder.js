@@ -30,8 +30,8 @@ const students = create150Students();
 const importAdults = async () => {
   try {
     await Avatar.create(avatars);
-    await Adult.create(adults);
-    await Student.create(students);
+    // await Adult.create(adults);
+    // await Student.create(students);
     console.log('data imported...');
     process.exit();
   } catch (error) {
@@ -43,8 +43,8 @@ const importAdults = async () => {
 const deleteAdults = async () => {
   try {
     await Avatar.deleteMany();
-    await Adult.deleteMany();
-    await Student.deleteMany();
+    // await Adult.deleteMany();
+    // await Student.deleteMany();
     console.log('data deleted...');
     process.exit();
   } catch (error) {
