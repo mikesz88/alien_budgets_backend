@@ -15,3 +15,21 @@ exports.getAdult = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({ success: true, data: adult });
 });
+
+// @desc Get all class codes
+// @route GET /api/v1/adults/classcodelist
+// @access PUBLIC
+exports.getAllClassCodes = asyncHandler(async (req, res, next) => {
+  const classCodes = await Adult.find().select('classrooms');
+  const list = [];
+  if (!classCodes) {
+    return next(new ErrorResponse(`No class codes found.`, 404));
+  }
+  
+  for (const classroom of classCodes) {
+    list.push(...classroom.classrooms)
+  }
+  const uniqueClassCodes = Array.from(new Set(list))
+
+  res.status(200).json({ success: true, data: uniqueClassCodes });
+})
