@@ -11,6 +11,7 @@ dotenv.config({ path: './config/config.env'});
 const Adult = require('./models/Adult');
 const Student = require('./models/Student');
 const Avatar = require('./models/Avatar');
+const ForgotQuestion = require('./models/ForgotQuestion');
 
 // Connect DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Read JSON
 const avatars = JSON.parse(fs.readFileSync(`${__dirname}/_data/Avatar.json`))
+const forgotQuestionList = JSON.parse(fs.readFileSync(`${__dirname}/_data/ForgotQuestionList.json`))
 
 // Faker JS
 const adults = create10Adults();
@@ -29,7 +31,8 @@ const students = create150Students();
 // import into DB
 const importAdults = async () => {
   try {
-    await Avatar.create(avatars);
+    await ForgotQuestion.create(forgotQuestionList);
+    // await Avatar.create(avatars);
     // await Adult.create(adults);
     // await Student.create(students);
     console.log('data imported...');
@@ -42,7 +45,8 @@ const importAdults = async () => {
 // delete data from DB
 const deleteAdults = async () => {
   try {
-    await Avatar.deleteMany();
+    await ForgotQuestion.deleteMany();
+    // await Avatar.deleteMany();
     // await Adult.deleteMany();
     // await Student.deleteMany();
     console.log('data deleted...');
