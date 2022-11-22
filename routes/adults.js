@@ -3,16 +3,24 @@ const router = express.Router();
 
 const {
   getAdult,
-  getAllClassCodes
+  resetStudentPassword,
+  updateStudentByAdult,
+  validateEmail,
 } = require('../controllers/adults');
 
-const { protect } = require('../middleware/auth');
+const { protect, authorizedAdult } = require('../middleware/auth');
 
+router.get('/class/:classid', protect, getAdult);
 
-router.route('/class/:classid')
-  .get(protect, getAdult);
+router.get('/validateemail/:email', validateEmail);
 
-router.route('/classcodelist')
-  .get(getAllClassCodes);
+router.put(
+  '/updatestudent/:studentid',
+  protect,
+  authorizedAdult,
+  updateStudentByAdult
+);
+
+router.put('/:studentid', protect, authorizedAdult, resetStudentPassword);
 
 module.exports = router;
