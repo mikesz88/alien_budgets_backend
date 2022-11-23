@@ -4,25 +4,6 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const { faker } = require('@faker-js/faker');
 
-// @desc Get single adult by class
-// @route GET /api/v1/adults/:classid
-// @access PRIVATE
-exports.getAdult = asyncHandler(async (req, res, next) => {
-  const adult = await Adult.findOne({
-    classrooms: { $in: req.params.classid },
-  }).select('lastName avatarURL avatarColor classrooms');
-
-  if (!adult) {
-    return next(
-      new ErrorResponse(
-        `No adult found with class id of ${req.params.classid}`,
-        404
-      )
-    );
-  }
-  res.status(200).json({ success: true, data: adult });
-});
-
 // @desc Reset Students password
 // @route GET /api/v1/adults/:studentid
 // @access PRIVATE
@@ -55,7 +36,7 @@ exports.resetStudentPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc Reset Students password
+// @desc Update Student By Adult
 // @route GET /api/v1/adults/updatestudent/:studentid
 // @access PRIVATE
 exports.updateStudentByAdult = asyncHandler(async (req, res, next) => {

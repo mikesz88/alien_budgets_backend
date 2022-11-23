@@ -26,7 +26,7 @@ router.post('/', protect, authorizedAdult, createClassroom);
 router.get('/:adultid', protect, getAllClassroomsOfAdult);
 router.get('/single/:classid', protect, getSingleClassroom);
 router.get('/student/:classroomcode', protect, getClassroomFromStudent);
-router.put('/updateStudent', protect, updateStudentData);
+router.put('/updatestudent', protect, updateStudentData);
 router.put('/addstudent', addStudentToClassroom);
 router.delete(
   '/deleteteacher/:adultid',

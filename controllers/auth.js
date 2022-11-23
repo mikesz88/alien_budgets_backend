@@ -142,10 +142,7 @@ exports.adultForgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: true });
 
-  // const resetUrl = `${req.protocol}://${req.get(
-  //   'host'
-  // )}/api/v1/auth/resetpassword/${resetToken}`;
-  const resetUrl = `${req.protocol}://localhost:3000/forgotpassword/resetbyemail/${resetToken}`;
+  const resetUrl = `https://www.alienbudgets.com/forgotpassword/resetbyemail/${resetToken}`;
 
   const message = `
   You are receiving this email because you (or someone else) has requested a password reset.
@@ -162,16 +159,16 @@ exports.adultForgotPassword = asyncHandler(async (req, res, next) => {
     await sendEmail(options);
     res.status(200).json({ success: true, data: 'Email sent' });
   } catch (error) {
-    throw error;
-
+    console.error(error);
     user.getResetPasswordToken = undefined;
     user.getResetPasswordExpired = undefined;
 
     await user.save({ validateBeforeSave: false });
+    return next(new ErrorResponse('Email could not be sent', 500));
   }
 });
 
-// @desc Forgot Question
+// @desc Get Forgot Question
 // @route GET /api/v1/auth/forgotquestion/:user
 // @access PUBLIC
 exports.forgotQuestion = asyncHandler(async (req, res, next) => {
@@ -211,7 +208,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // compare forgotten Password Answer with user Forgotten Answer in account
   const isMatch = await user.matchForgotAnswer(req.body.forgotPasswordAnswer);
   if (!isMatch) {
     return next(new ErrorResponse('Invalid credentials', 401));
@@ -290,8 +286,6 @@ exports.adultUpdateDetails = asyncHandler(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    // avatarURL: req.body.avatarURL,
-    // avatarColor: req.body.avatarColor,
     gradeLevel: req.body.gradeLevel,
     classrooms: req.body.classrooms,
   };
@@ -401,7 +395,7 @@ exports.deleteSelf = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc Delete my own account
+// @desc Delete student accounts
 // @route delete /api/v1/auth/deletestudents
 // @access PRIVATE
 exports.deleteSelectedStudents = asyncHandler(async (req, res, next) => {
@@ -410,7 +404,10 @@ exports.deleteSelectedStudents = asyncHandler(async (req, res, next) => {
   });
 
   if (!results) {
-    return next(new ErrorResponse("Unable to students with given id's"), 401);
+    return next(
+      new ErrorResponse("Unable to delete students with given id's"),
+      401
+    );
   }
 
   res.status(200).json({ success: true, results });

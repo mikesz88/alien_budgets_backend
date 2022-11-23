@@ -15,7 +15,7 @@ exports.getAllClassrooms = asyncHandler(async (req, res, next) => {
 });
 
 // @desc Get all Classes of specific adult
-// @route GET /api/v1/classrooms/:adultId
+// @route GET /api/v1/classrooms/:adultid
 // @access PRIVATE
 exports.getAllClassroomsOfAdult = asyncHandler(async (req, res, next) => {
   const classrooms = await Classroom.find({ adult: req.params.adultid });
@@ -67,7 +67,7 @@ exports.getClassroomFromStudent = asyncHandler(async (req, res, next) => {
 });
 
 // @desc Update student in class
-// @route PUT /api/v1/classrooms/updateStudent
+// @route PUT /api/v1/classrooms/updatestudent
 // @access PRIVATE
 exports.updateStudentData = asyncHandler(async (req, res, next) => {
   const classroom = await Classroom.findOne({
@@ -219,7 +219,7 @@ exports.deleteAllClassroomsByTeacher = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc delete all classrooms based on adult id
+// @desc delete single classrooms based on adult id
 // @route DELETE /api/v1/classrooms/delete/:classroomid
 // @access PRIVATE
 exports.deleteSingleClassroomByTeacher = asyncHandler(
