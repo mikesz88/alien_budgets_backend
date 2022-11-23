@@ -1,6 +1,6 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const morgan = require("morgan");
+const express = require('express');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -12,7 +12,7 @@ const rateLimit = require('express-rate-limit');
 
 const path = require('path');
 const cookieParser = require('cookie-parser');
-dotenv.config({ path: './config/config.env'});
+dotenv.config({ path: './config/config.env' });
 
 connectDB();
 
@@ -20,8 +20,12 @@ connectDB();
 const adults = require('./routes/adults');
 const students = require('./routes/students');
 const auth = require('./routes/auth');
-const avatars = require('./routes/avatars')
-const forgotQuestions = require('./routes/forgotQuestions')
+const avatars = require('./routes/avatars');
+const forgotQuestions = require('./routes/forgotQuestions');
+const classrooms = require('./routes/classrooms.js');
+const jobs = require('./routes/jobs');
+const dwellings = require('./routes/dwellings');
+const games = require('./routes/games');
 
 const PORT = process.env.PORT || 5000;
 
@@ -36,7 +40,7 @@ app.use(cookieParser());
 // display routes in console
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-};
+}
 
 // Security Features
 app.use(mongoSanitize());
@@ -47,7 +51,7 @@ app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: 100
+  max: 200,
 });
 
 app.use(limiter);
@@ -60,6 +64,10 @@ app.use('/api/v1/students', students);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/avatars', avatars);
 app.use('/api/v1/forgotquestions', forgotQuestions);
+app.use('/api/v1/classrooms', classrooms);
+app.use('/api/v1/jobs', jobs);
+app.use('/api/v1/dwellings', dwellings);
+app.use('/api/v1/games', games);
 
 // Error Handler must come after mount files
 app.use(errorHandler);
@@ -72,4 +80,4 @@ const server = app.listen(
 process.on('unhandledRejection', (err) => {
   console.log(`Error: ${err.message}`);
   server.close(() => process.exit(1));
-})
+});
